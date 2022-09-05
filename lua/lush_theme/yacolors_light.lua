@@ -280,42 +280,47 @@ local theme = lush(function()
     --
     -- See :h highlight-groups
     --
-    -- ColorColumn  { }, -- Columns set with 'colorcolumn'
-    -- Conceal      { }, -- Placeholder characters substituted for concealed text (see 'conceallevel')
+    Normal       { bg = BlueGrey[1], fg = BlueGrey[20] }, -- Normal text
+    NormalNC     { Normal }, -- normal text in non-current windows
+
+    Underlined     { gui = "underline" }, -- Text that stands out, HTML links
+    -- Ignore         { }, -- Left blank, hidden |hl-Ignore| (NOTE: May be invisible here in template)
+    Error          { bg = Red[4] }, -- Any erroneous construct
+    Todo           { bg = Yellow[2] }, -- Anything that needs extra attention; mostly the keywords TODO FIXME and XXX
+
+    NormalFloat  { bg = BlueGrey[17], fg = Normal.bg }, -- Normal text in floating windows.
     Cursor       { reverse = true }, -- Character under the cursor
     lCursor      { Cursor }, -- Character under the cursor when |language-mapping| is used (see 'guicursor')
     CursorIM     { Cursor }, -- Like Cursor, but used when in IME mode |CursorIM|
     CursorLine   { bg = BlueGrey[3] }, -- Screen-line at the cursor, when 'cursorline' is set. Low-priority if foreground (ctermfg OR guifg) is not set.
     CursorColumn { CursorLine }, -- Screen-column at the cursor, when 'cursorcolumn' is set.
+    ColorColumn  { CursorLine }, -- Columns set with 'colorcolumn'
+    Conceal      { bg = BlueGrey[17], fg = Normal.fg }, -- Placeholder characters substituted for concealed text (see 'conceallevel')
     Directory    { fg = DarkBlue[10] }, -- Directory names (and other special names in listings)
-    -- DiffAdd      { }, -- Diff mode: Added line |diff.txt|
-    -- DiffChange   { }, -- Diff mode: Changed line |diff.txt|
-    -- DiffDelete   { }, -- Diff mode: Deleted line |diff.txt|
-    -- DiffText     { }, -- Diff mode: Changed text within a changed line |diff.txt|
+    DiffAdd      { bg = Green[4], fg = Green[16] }, -- Diff mode: Added line |diff.txt|
+    DiffChange   { bg = Orange[4], fg = Orange[16] }, -- Diff mode: Changed line |diff.txt|
+    DiffDelete   { bg = Red[4], fg = Red[16] }, -- Diff mode: Deleted line |diff.txt|
+    DiffText     { bg = Orange[4], fg = Orange[16] }, -- Diff mode: Changed text within a changed line |diff.txt|
     -- EndOfBuffer  { }, -- Filler lines (~) after the end of the buffer. By default, this is highlighted like |hl-NonText|.
-    -- TermCursor   { }, -- Cursor in a focused terminal
-    -- TermCursorNC { }, -- Cursor in an unfocused terminal
+    TermCursor   { Cursor }, -- Cursor in a focused terminal
+    TermCursorNC { }, -- Cursor in an unfocused terminal
     ErrorMsg     { bg = Red[8], fg = Red[1] }, -- Error messages on the command line
-    -- VertSplit    { }, -- Column separating vertically split windows
-    -- Folded       { }, -- Line used for closed folds
-    -- FoldColumn   { }, -- 'foldcolumn'
-    -- SignColumn   { }, -- Column where |signs| are displayed
+    VertSplit    { NormalFloat }, -- Column separating vertically split windows
+    Folded       { bg = BlueGrey[7] }, -- Line used for closed folds
+    FoldColumn   { Folded }, -- 'foldcolumn'
+    SignColumn   { CursorLine }, -- Column where |signs| are displayed
     IncSearch    { bg = Yellow[10] }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
     Substitute   { bg = Yellow[5] }, -- |:substitute| replacement text highlighting
     LineNr       { fg = BlueGrey[13] }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
     CursorLineNr { LineNr, bold = true }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
-    MatchParen   { reverse = true }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
+    MatchParen   { bg = Yellow[2] }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
     ModeMsg      { bold = true }, -- 'showmode' message (e.g., "-- INSERT -- ")
-    -- MsgArea      { }, -- Area for messages and cmdline
-    -- MsgSeparator { }, -- Separator for scrolled messages, `msgsep` flag of 'display'
+    MsgArea      { CursorLine }, -- Area for messages and cmdline
+    MsgSeparator { NormalFloat }, -- Separator for scrolled messages, `msgsep` flag of 'display'
     MoreMsg      { bg = Mint[2], fg = Mint[17] }, -- |more-prompt|
     NonText      { fg = Blue[6] }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
-    -- rma
-    Normal       { bg = BlueGrey[1], fg = BlueGrey[20] }, -- Normal text
-    NormalFloat  { bg = BlueGrey[17], fg = Normal.bg }, -- Normal text in floating windows.
-    NormalNC     { Normal }, -- normal text in non-current windows
     Pmenu        { NormalFloat }, -- Popup menu: Normal item.
-    PmenuSel     { Normal }, -- Popup menu: Selected item.
+    PmenuSel     { CursorLine }, -- Popup menu: Selected item.
     PmenuSbar    { Pmenu }, -- Popup menu: Scrollbar.
     PmenuThumb   { Normal  }, -- Popup menu: Thumb of the scrollbar.
     Question     { MoreMsg }, -- |hit-enter| prompt and yes/no questions
@@ -336,6 +341,7 @@ local theme = lush(function()
     VisualNOS    { Visual }, -- Visual mode selection when vim is "Not Owning the Selection".
     WarningMsg   { ErrorMsg }, -- Warning messages
     Whitespace   { fg = BlueGrey[8] }, -- "nbsp", "space", "tab" and "trail" in 'listchars'
+    ExtraWhitespace { Error }, -- "nbsp", "space", "tab" and "trail" in 'listchars'
     -- Winseparator { }, -- Separator between window splits. Inherts from |hl-VertSplit| by default, which it will replace eventually.
     -- WildMenu     { }, -- Current match in 'wildmenu' completion
 
@@ -352,7 +358,7 @@ local theme = lush(function()
     Constant       { fg = Mint[8] }, -- (*) Any constant
     String         { fg = Green[10] }, --   A string constant: "this is a string"
     Character      { String, bold = true }, --   A character constant: 'c', '\n'
-    Number         { fg = Red[15] }, --   A number constant: 234, 0xff
+    Number         { fg = Orange[12] }, --   A number constant: 234, 0xff
     Float          { Number }, --   A floating point constant: 2.3e10
     Boolean        { fg = Purple[10] }, --   A boolean constant: TRUE, false
 
@@ -362,7 +368,7 @@ local theme = lush(function()
     Statement      { fg = DarkBlue[10], bold = true, italic = true }, -- (*) Any statement
     Conditional    { Statement, fg = Purple[8] }, --   if, then, else, endif, switch, etc.
     Repeat         { Statement, fg = Number.fg }, --   for, do, while, etc.
-    Label          { Statement }, --   case, default, etc.
+    Label          { Conditional }, --   case, default, etc.
     Operator       { fg = Normal.fg, bold = false }, --   "sizeof", "+", "*", etc.
     Keyword        { Statement }, --   any other keyword
     Exception      { Statement, fg = Red[10] }, --   try, catch, throw
@@ -384,11 +390,6 @@ local theme = lush(function()
     Delimiter      { Special }, --   Character that needs attention
     SpecialComment { Comment, bold = true }, --   Special things inside a comment (e.g. '\n')
     Debug          { fg = Exception.fg, italic = true }, --   Debugging statements
-
-    Underlined     { gui = "underline" }, -- Text that stands out, HTML links
-    -- Ignore         { }, -- Left blank, hidden |hl-Ignore| (NOTE: May be invisible here in template)
-    Error          { bg = Red[4] }, -- Any erroneous construct
-    Todo           { bg = Yellow[2] }, -- Anything that needs extra attention; mostly the keywords TODO FIXME and XXX
 
     -- These groups are for the native LSP client and diagnostic system. Some
     -- other LSP clients may use these groups, or use their own. Consult your
@@ -443,7 +444,7 @@ local theme = lush(function()
     TSConstructor        { fg = Green[15] } , -- Constructor calls and definitions: `{}` in Lua, and Java constructors.
     TSDebug              { Exception } , -- Debugging statements.
     TSDefine             { Constant } , -- Preprocessor #define state LineNr, bold = truements.
-    TSError              { bg = Red[2] } , -- Syntax/parser errors. This might highlight large sections of code while the user is typing still incomplete code, use a sensible highlight.
+    TSError              { Error } , -- Syntax/parser errors. This might highlight large sections of code while the user is typing still incomplete code, use a sensible highlight.
     TSException          { Exception } , -- Exception related keywords: `try`, `except`, `finally` in Python.
     TSField              { Identifier } , -- Object and struct fields.
     -- TSProperty           { } , -- Same as `TSField`.
@@ -453,9 +454,14 @@ local theme = lush(function()
     TSFuncMacro          { Keyword } , -- Macro defined functions (calls and definitions): each `macro_rules` in Rust.
     TSInclude            { Keyword } , -- File or module inclusion keywords: `#include` in C, `use` or `extern crate` in Rust.
     TSKeyword            { Keyword } , -- Keywords that don't fit into other categories.
-    TSKeywordFunction    { Keyword, fg = Purple[12] } , -- Keywords used to define a function: `function` in Lua, `def` and `lambda` in Python.
+    TSRepeat             { Repeat } , -- Keywords related to loops: `for`, `while`, etc.
+    TSKeywordVarLetConst { Keyword, fg = Constant.fg } , -- Keywords used to define a variable: `var`, `let` and `const` in JavaScript
+    TSKeywordFunction    { Keyword, fg = Constant.fg } , -- Keywords used to define a function: `function` in Lua, `def` and `lambda` in Python.
+    TSKeywordSwitch      { TSConditional } , -- Keyword `switch`
     TSKeywordOperator    { Keyword } , -- Unary and binary operators that are English words: `and`, `or` in Python; `sizeof` in C.
-    TSKeywordReturn      { Keyword, fg = DarkBlue[10] } , -- Keywords like `return` and `yield`.
+    TSKeywordReturn      { Keyword, fg = Yellow[13] } , -- Keywords like `return` and `yield`.
+    TSKeywordBreak       { TSKeywordReturn } , -- Keyword `break`
+    TSKeywordContinue    { TSKeywordReturn } , -- Keyword `continue`
     TSLabel              { Label } , -- GOTO labels: `label:` in C, and `::label::` in Lua.
     TSMethod             { Function } , -- Method calls and definitions.
     TSNamespace          { Identifier } , -- Identifiers referring to modules and namespaces.
@@ -465,10 +471,10 @@ local theme = lush(function()
     TSParameter          { Identifier } , -- Parameters of a function.
     TSParameterReference { TSParameter, italic = true } , -- References to parameters of a function.
     TSPreProc            { Constant } , -- Preprocessor #if, #else, #endif, etc.
-    TSPunctDelimiter     { fg = BlueGrey[18] } , -- Punctuation delimiters: Periods, commas, semicolons, etc.
+    TSPunctDelimiter     { fg = BlueGrey[15] } , -- Punctuation delimiters: Periods, commas, semicolons, etc.
     TSPunctBracket       { TSPunctDelimiter } , -- Brackets, braces, parentheses, etc.
     TSPunctSpecial       { TSPunctDelimiter } , -- Special punctuation that doesn't fit into the previous categories.
-    TSRepeat             { Repeat } , -- Keywords related to loops: `for`, `while`, etc.
+    TSPunctArray         { fg = Orange[9] } , -- Brackets and commas in array literals
     TSStorageClass       { Conditional } , -- Keywords that affect how a variable is stored: `static`, `comptime`, `extern`, etc.
     TSString             { String } , -- String literals.
     TSStringRegex        { String, italic = true } , -- Regular expression literals.
