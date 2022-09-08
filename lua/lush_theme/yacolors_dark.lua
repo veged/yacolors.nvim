@@ -61,7 +61,7 @@ local base = require('lush_theme.yacolors')
 ---@diagnostic disable: undefined-global
 local theme = lush(function()
   return {
-    Normal { bg = BlueGrey[1], fg = BlueGrey[20] }, -- Normal text
+    Normal { bg = BlueGrey[20], fg = BlueGrey[1] }, -- Normal text
   }
 end)
 
