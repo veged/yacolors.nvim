@@ -143,7 +143,7 @@ local theme = lush(function()
     --
     -- Uncomment and edit if you want more specific syntax highlighting.
 
-    Comment        { fg = BlueGrey[15] }, -- Any comment
+    Comment        { fg = BlueGrey[14] }, -- Any comment
 
     Constant       { fg = Mint[8] }, -- (*) Any constant
     String         { fg = Green[10] }, --   A string constant: "this is a string"
@@ -152,14 +152,14 @@ local theme = lush(function()
     Float          { Number }, --   A floating point constant: 2.3e10
     Boolean        { fg = Purple[10] }, --   A boolean constant: TRUE, false
 
-    Identifier     { }, -- (*) Any variable name
+    Identifier     { Normal }, -- (*) Any variable name
     Function       { Identifier }, --   Function name (also: methods for classes)
 
     Statement      { fg = DarkBlue[10], bold = true, italic = true }, -- (*) Any statement
     Conditional    { Statement, fg = Purple[8] }, --   if, then, else, endif, switch, etc.
     Repeat         { Statement, fg = Number.fg }, --   for, do, while, etc.
     Label          { Conditional }, --   case, default, etc.
-    Operator       { fg = Normal.fg, bold = false }, --   "sizeof", "+", "*", etc.
+    Operator       { fg = BlueGrey[14] }, --   "sizeof", "+", "*", etc.
     Keyword        { Statement }, --   any other keyword
     Exception      { Statement, fg = Red[10] }, --   try, catch, throw
 
@@ -200,9 +200,9 @@ local theme = lush(function()
     DiagnosticWarn             { fg = Orange[10] } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
     DiagnosticInfo             { fg = Mint[8] } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
     DiagnosticHint             { Comment } , -- Used as the base highlight group. Other Diagnostic highlights link to this by default (except Underline)
-    DiagnosticVirtualTextError { fg = Red[5] } , -- Used for "Error" diagnostic virtual text.
-    DiagnosticVirtualTextWarn  { fg = Orange[7] } , -- Used for "Warn" diagnostic virtual text.
-    DiagnosticVirtualTextInfo  { fg = Mint[5] } , -- Used for "Info" diagnostic virtual text.
+    -- DiagnosticVirtualTextError { } , -- Used for "Error" diagnostic virtual text.
+    -- DiagnosticVirtualTextWarn  { } , -- Used for "Warn" diagnostic virtual text.
+    -- DiagnosticVirtualTextInfo  { } , -- Used for "Info" diagnostic virtual text.
     -- DiagnosticVirtualTextHint  { } , -- Used for "Hint" diagnostic virtual text.
     -- DiagnosticUnderlineError   { } , -- Used to underline "Error" diagnostics.
     -- DiagnosticUnderlineWarn    { } , -- Used to underline "Warn" diagnostics.
@@ -228,6 +228,7 @@ local theme = lush(function()
     TSCharacterSpecial   { Special } , -- Special characters.
     TSComment            { Comment } , -- Line comments and block comments.
     TSConditional        { Conditional } , -- Keywords related to conditionals: `if`, `when`, `cond`, etc.
+    TSPunctConditional   { fg = Purple[6], italic = true } , -- Brackets in conditionals
     TSConstant           { Constant } , -- Constants identifiers. These might not be semantically constant. E.g. uppercase variables in Python.
     TSConstBuiltin       { Constant, bold = true } , -- Built-in constant values: `nil` in Lua.
     TSConstMacro         { TSConstBuiltin, italic = true } , -- Constants defined by macros: `NULL` in C.
@@ -237,7 +238,7 @@ local theme = lush(function()
     TSError              { Error } , -- Syntax/parser errors. This might highlight large sections of code while the user is typing still incomplete code, use a sensible highlight.
     TSException          { Exception } , -- Exception related keywords: `try`, `except`, `finally` in Python.
     TSField              { Identifier } , -- Object and struct fields.
-    TSProperty           { TSField } , -- Same as `TSField`.
+    TSProperty           { } , -- Same as `TSField`.
     TSFloat              { Number } , -- Floating-point number literals.
     TSFunction           { Function } , -- Function calls and definitions.
     TSFuncBuiltin        { Function, bold = true } , -- Built-in functions: `print` in Lua.
@@ -247,6 +248,8 @@ local theme = lush(function()
     TSRepeat             { Repeat } , -- Keywords related to loops: `for`, `while`, etc.
     TSKeywordVarLetConst { Keyword, fg = Constant.fg } , -- Keywords used to define a variable: `var`, `let` and `const` in JavaScript
     TSKeywordFunction    { Keyword, fg = Constant.fg } , -- Keywords used to define a function: `function` in Lua, `def` and `lambda` in Python.
+    TSPunctArrowFunction { TSKeywordFunction } , -- `=>` in arrow functions
+    TSPunctFunction      { fg = Mint[6], italic = true } , -- Punctuation in function declarations
     TSKeywordSwitch      { TSConditional } , -- Keyword `switch`
     TSKeywordOperator    { Keyword } , -- Unary and binary operators that are English words: `and`, `or` in Python; `sizeof` in C.
     TSKeywordReturn      { Keyword, fg = Yellow[13] } , -- Keywords like `return` and `yield`.
@@ -261,20 +264,23 @@ local theme = lush(function()
     TSParameter          { Identifier } , -- Parameters of a function.
     TSParameterReference { TSParameter, italic = true } , -- References to parameters of a function.
     TSPreProc            { Constant } , -- Preprocessor #if, #else, #endif, etc.
-    TSPunctDelimiter     { fg = BlueGrey[15] } , -- Punctuation delimiters: Periods, commas, semicolons, etc.
+    TSPunctDelimiter     { fg = BlueGrey[14] } , -- Punctuation delimiters: Periods, commas, semicolons, etc.
     TSPunctBracket       { TSPunctDelimiter } , -- Brackets, braces, parentheses, etc.
     TSPunctSpecial       { TSPunctDelimiter } , -- Special punctuation that doesn't fit into the previous categories.
     TSPunctArray         { fg = Orange[9] } , -- Brackets and commas in array literals
+    TSPunctObject        { TSPunctArray } , -- Brackets and commas in object literals
     TSStorageClass       { Conditional } , -- Keywords that affect how a variable is stored: `static`, `comptime`, `extern`, etc.
     TSString             { String } , -- String literals.
     TSStringRegex        { String, italic = true } , -- Regular expression literals.
     TSStringEscape       { Character } , -- Escape characters within a string: `\n`, `\t`, etc.
-    TSStringSpecial      { Constant } , -- Strings with special meaning that don't fit into the previous categories.
+    TSStringSpecial      { TSStringEscape } , -- Strings with special meaning that don't fit into the previous categories.
+    TSStringSubst        { fg = Green[5], bold = true } , -- Template substitution brackets in template string literals
+    TSPunctString        { fg = Green[6] } , -- Quotes in string literals
     TSSymbol             { Identifier } , -- Identifiers referring to symbols or atoms.
     TSTag                { Identifier, italic = true } , -- Tags like HTML tag names.
     TSTagAttribute       { Identifier } , -- HTML tag attributes.
     TSTagDelimiter       { TSPunctDelimiter } , -- Tag delimiters like `<` `>` `/`.
-    TSText               { } , -- Non-structured text. Like text in a markup language.
+    TSText               { Normal } , -- Non-structured text. Like text in a markup language.
     TSStrong             { TSText, bold = true } , -- Text to be represented in bold.
     TSEmphasis           { TSText, italic = true } , -- Text to be represented with emphasis.
     TSUnderline          { TSText, underline = true } , -- Text to be represented with an underline.
@@ -300,19 +306,20 @@ local theme = lush(function()
     CmpItemAbbrMatch       { bold = true } , -- Highlight group for matched characters of each completion field. Matched characters must form a substring of a field which share a starting position.
     CmpItemAbbrMatchFuzzy  { CmpItemAbbrMatch } , -- Highlight group for fuzzy-matched characters of each completion field.
     CmpItemKind            { NormalFloat, italic = true } , -- Highlight group for the kind of the field. NOTE: `kind` is a symbol after each completion option.
-    CmpItemKindConstant    { TSConstant } ,
-    CmpItemKindConstructor { TSConstructor },
-    CmpItemKindFunction    { fg = TSKeywordFunction.fg },
-    CmpItemKindKeyword     { fg = TSKeyword.fg },
-    CmpItemKindField       { TSField },
-    CmpItemKindProperty    { TSProperty },
-    CmpItemKindMethod      { TSMethod },
-    CmpItemKindOperator    { TSOperator },
-    CmpItemKindText        { TSText },
-    CmpItemKindVariable    { fg = TSKeywordVarLetConst.fg },
-    CmpItemKindEnum        { CmpItemKindVariable },
-    CmpItemKindEnumMember  { CmpItemKindVariable },
-    CmpItemKindSnippet     { fg = TSKeywordReturn.fg  },
+    CmpItemKindConstant    { TSConstant, italic = true } ,
+    CmpItemKindConstructor { TSConstructor, italic = true },
+    CmpItemKindFunction    { fg = TSKeywordFunction.fg, italic = true },
+    CmpItemKindClass       { fg = TSType.fg, italic = true },
+    CmpItemKindKeyword     { fg = TSKeyword.fg, italic = true },
+    CmpItemKindField       { TSField, italic = true },
+    CmpItemKindProperty    { TSProperty, italic = true },
+    CmpItemKindMethod      { TSMethod, italic = true },
+    CmpItemKindOperator    { TSOperator, italic = true },
+    CmpItemKindText        { CmpItemKind, italic = true },
+    CmpItemKindVariable    { fg = TSKeywordVarLetConst.fg, italic = true },
+    CmpItemKindEnum        { CmpItemKindVariable, italic = true },
+    CmpItemKindEnumMember  { CmpItemKindVariable, italic = true },
+    CmpItemKindSnippet     { fg = TSKeywordReturn.fg, italic = true }
     -- CmpItemMenu            { NormalFloat } , -- The menu field's highlight group.
   }
 end)
