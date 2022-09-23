@@ -110,7 +110,7 @@ local theme = lush(function()
     MoreMsg      { bg = Mint[2], fg = Mint[17] }, -- |more-prompt|
     NonText      { fg = Blue[6] }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
     Pmenu        { NormalFloat }, -- Popup menu: Normal item.
-    PmenuSel     { CursorLine }, -- Popup menu: Selected item.
+    PmenuSel     { CursorLine, bold = true }, -- Popup menu: Selected item.
     PmenuSbar    { Pmenu }, -- Popup menu: Scrollbar.
     PmenuThumb   { Normal  }, -- Popup menu: Thumb of the scrollbar.
     Question     { MoreMsg }, -- |hit-enter| prompt and yes/no questions
@@ -255,9 +255,10 @@ local theme = lush(function()
     TSInclude            { TSKeywordDeclaration } , -- File or module inclusion keywords: `#include` in C, `use` or `extern crate` in Rust.
     TSKeywordSwitch      { TSConditional } , -- Keyword `switch`
     TSKeywordReturn      { Keyword, fg = Purple[10] } , -- Keywords like `return` and `yield`.
-    TSKeywordBreak       { TSKeywordReturn } , -- Keyword `break`
-    TSKeywordContinue    { TSKeywordReturn } , -- Keyword `continue`
-    TSKeywordWith        { TSKeywordDeclaration } , -- Keyword `continue`
+    TSKeywordBreak       { TSKeywordReturn } , -- Keyword `break`.
+    TSKeywordContinue    { TSKeywordReturn } , -- Keyword `continue`.
+    TSKeywordWith        { TSKeywordDeclaration } , -- Keyword `with`.
+    TSPunctWith          { TSPunctFunction } , -- Brackets in `with`.
     TSLabel              { Label } , -- GOTO labels: `label:` in C, and `::label::` in Lua.
     TSMethod             { Function } , -- Method calls and definitions.
     TSNamespace          { Identifier } , -- Identifiers referring to modules and namespaces.
