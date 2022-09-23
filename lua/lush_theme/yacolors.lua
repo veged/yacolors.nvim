@@ -145,18 +145,18 @@ local theme = lush(function()
 
     Comment        { fg = BlueGrey[14] }, -- Any comment
 
-    Constant       { fg = Mint[8] }, -- (*) Any constant
-    String         { fg = Green[10] }, --   A string constant: "this is a string"
+    Constant       { fg = Green[10] }, -- (*) Any constant
+    String         { fg = Mint[8] }, --   A string constant: "this is a string"
     Character      { String, bold = true }, --   A character constant: 'c', '\n'
     Number         { fg = Orange[12] }, --   A number constant: 234, 0xff
     Float          { Number }, --   A floating point constant: 2.3e10
-    Boolean        { fg = Purple[10] }, --   A boolean constant: TRUE, false
+    Boolean        { fg = Blue[9] }, --   A boolean constant: TRUE, false
 
-    Identifier     { Normal }, -- (*) Any variable name
+    Identifier     { fg = Normal.fg }, -- (*) Any variable name
     Function       { Identifier }, --   Function name (also: methods for classes)
 
-    Statement      { fg = DarkBlue[10], bold = true, italic = true }, -- (*) Any statement
-    Conditional    { Statement, fg = Purple[8] }, --   if, then, else, endif, switch, etc.
+    Statement      { fg = DarkBlue[11], bold = true, italic = true }, -- (*) Any statement
+    Conditional    { Statement, fg = Boolean.fg }, --   if, then, else, endif, switch, etc.
     Repeat         { Statement, fg = Number.fg }, --   for, do, while, etc.
     Label          { Conditional }, --   case, default, etc.
     Operator       { fg = BlueGrey[14] }, --   "sizeof", "+", "*", etc.
@@ -222,13 +222,14 @@ local theme = lush(function()
     --
     -- See :h nvim-treesitter-highlights, some groups may not be listed, submit a PR fix to lush-template!
     --
+    TSOperator           { Operator } , -- Binary or unary operators: `+`, and also `->` and `*` in C.
     TSAttribute          { Comment } , -- Annotations that can be attached to the code to denote some kind of meta information. e.g. C++/Dart attributes.
     TSBoolean            { Boolean } , -- Boolean literals: `True` and `False` in Python.
     TSCharacter          { Character } , -- Character literals: `'a'` in C.
     TSCharacterSpecial   { Special } , -- Special characters.
     TSComment            { Comment } , -- Line comments and block comments.
     TSConditional        { Conditional } , -- Keywords related to conditionals: `if`, `when`, `cond`, etc.
-    TSPunctConditional   { fg = Purple[6], italic = true } , -- Brackets in conditionals
+    TSPunctConditional   { fg = Blue[6], italic = true } , -- Brackets in conditionals
     TSConstant           { Constant } , -- Constants identifiers. These might not be semantically constant. E.g. uppercase variables in Python.
     TSConstBuiltin       { Constant, bold = true } , -- Built-in constant values: `nil` in Lua.
     TSConstMacro         { TSConstBuiltin, italic = true } , -- Constants defined by macros: `NULL` in C.
@@ -243,39 +244,40 @@ local theme = lush(function()
     TSFunction           { Function } , -- Function calls and definitions.
     TSFuncBuiltin        { Function, bold = true } , -- Built-in functions: `print` in Lua.
     TSFuncMacro          { Keyword } , -- Macro defined functions (calls and definitions): each `macro_rules` in Rust.
-    TSInclude            { Keyword } , -- File or module inclusion keywords: `#include` in C, `use` or `extern crate` in Rust.
     TSKeyword            { Keyword } , -- Keywords that don't fit into other categories.
-    TSRepeat             { Repeat } , -- Keywords related to loops: `for`, `while`, etc.
-    TSKeywordVarLetConst { Keyword, fg = Constant.fg } , -- Keywords used to define a variable: `var`, `let` and `const` in JavaScript
-    TSKeywordFunction    { Keyword, fg = Constant.fg } , -- Keywords used to define a function: `function` in Lua, `def` and `lambda` in Python.
-    TSPunctArrowFunction { TSKeywordFunction } , -- `=>` in arrow functions
-    TSPunctFunction      { fg = Mint[6], italic = true } , -- Punctuation in function declarations
-    TSKeywordSwitch      { TSConditional } , -- Keyword `switch`
     TSKeywordOperator    { Keyword } , -- Unary and binary operators that are English words: `and`, `or` in Python; `sizeof` in C.
-    TSKeywordReturn      { Keyword, fg = Yellow[13] } , -- Keywords like `return` and `yield`.
+    TSRepeat             { Repeat } , -- Keywords related to loops: `for`, `while`, etc.
+    TSPunctRepeat        { fg = Orange[9], italic = true } , -- Brackets in loops: `for`, `while`, etc.
+    TSKeywordDeclaration { Keyword, fg = Constant.fg } , -- Keywords used to define a variable/constant: `var`, `let` and `const` in JavaScript
+    TSKeywordFunction    { TSKeywordDeclaration } , -- Keywords used to define a function: `function` in Lua, `def` and `lambda` in Python.
+    TSPunctArrowFunction { TSKeywordFunction } , -- `=>` in arrow functions
+    TSPunctFunction      { fg = Green[7], italic = true } , -- Punctuation in function declarations
+    TSInclude            { TSKeywordDeclaration } , -- File or module inclusion keywords: `#include` in C, `use` or `extern crate` in Rust.
+    TSKeywordSwitch      { TSConditional } , -- Keyword `switch`
+    TSKeywordReturn      { Keyword, fg = Purple[10] } , -- Keywords like `return` and `yield`.
     TSKeywordBreak       { TSKeywordReturn } , -- Keyword `break`
     TSKeywordContinue    { TSKeywordReturn } , -- Keyword `continue`
+    TSKeywordWith        { TSKeywordDeclaration } , -- Keyword `continue`
     TSLabel              { Label } , -- GOTO labels: `label:` in C, and `::label::` in Lua.
     TSMethod             { Function } , -- Method calls and definitions.
     TSNamespace          { Identifier } , -- Identifiers referring to modules and namespaces.
     -- TSNone               { } , -- No highlighting (sets all highlight arguments to `NONE`). this group is used to clear certain ranges, for example, string interpolations. Don't change the values of this highlight group.
     TSNumber             { Number } , -- Numeric literals that don't fit into other categories.
-    TSOperator           { Operator } , -- Binary or unary operators: `+`, and also `->` and `*` in C.
     TSParameter          { Identifier } , -- Parameters of a function.
     TSParameterReference { TSParameter, italic = true } , -- References to parameters of a function.
     TSPreProc            { Constant } , -- Preprocessor #if, #else, #endif, etc.
     TSPunctDelimiter     { fg = BlueGrey[14] } , -- Punctuation delimiters: Periods, commas, semicolons, etc.
     TSPunctBracket       { TSPunctDelimiter } , -- Brackets, braces, parentheses, etc.
     TSPunctSpecial       { TSPunctDelimiter } , -- Special punctuation that doesn't fit into the previous categories.
-    TSPunctArray         { fg = Orange[9] } , -- Brackets and commas in array literals
-    TSPunctObject        { TSPunctArray } , -- Brackets and commas in object literals
+    TSPunctArray         { fg = TSPunctRepeat.fg } , -- Brackets and commas in array literals
+    TSPunctObject        { fg = TSPunctConditional.fg } , -- Brackets and commas in object literals
     TSStorageClass       { Conditional } , -- Keywords that affect how a variable is stored: `static`, `comptime`, `extern`, etc.
     TSString             { String } , -- String literals.
     TSStringRegex        { String, italic = true } , -- Regular expression literals.
     TSStringEscape       { Character } , -- Escape characters within a string: `\n`, `\t`, etc.
     TSStringSpecial      { TSStringEscape } , -- Strings with special meaning that don't fit into the previous categories.
     TSStringSubst        { fg = Green[5], bold = true } , -- Template substitution brackets in template string literals
-    TSPunctString        { fg = Green[6] } , -- Quotes in string literals
+    TSPunctString        { fg = Green[7] } , -- Quotes in string literals
     TSSymbol             { Identifier } , -- Identifiers referring to symbols or atoms.
     TSTag                { Identifier, italic = true } , -- Tags like HTML tag names.
     TSTagAttribute       { Identifier } , -- HTML tag attributes.
@@ -296,9 +298,10 @@ local theme = lush(function()
     TSWarning            { DiagnosticWarn } , -- Text representation of a warning note.
     TSDanger             { DiagnosticError } , -- Text representation of a danger note.
     TSType               { Type } , -- Type (and class) definitions and annotations.
+    TSTypeDefinition     { Type } , -- Type (and class) definitions.
     TSTypeBuiltin        { Type, bold = true } , -- Built-in types: `i32` in Rust.
     TSVariable           { Identifier } , -- Variable names that don't fit into other categories.
-    TSVariableBuiltin    { fg = Keyword.fg, bold = true } , -- Variable names defined by the language: `this` or `self` in Javascript.
+    TSVariableBuiltin    { bold = true } , -- Variable names defined by the language: `this` or `self` in Javascript.
 
     CmpCursorLine          { bg = NormalFloat.fg, fg = NormalFloat.bg } , -- Highlight group for unmatched characters of each completion field.
     CmpItemAbbr            {} , -- Highlight group for unmatched characters of each completion field.
@@ -311,7 +314,7 @@ local theme = lush(function()
     CmpItemKindFunction    { fg = TSKeywordFunction.fg, italic = true },
     CmpItemKindClass       { fg = TSType.fg, italic = true },
     CmpItemKindKeyword     { fg = TSKeyword.fg, italic = true },
-    CmpItemKindField       { TSField, italic = true },
+    CmpItemKindField       { italic = true },
     CmpItemKindProperty    { TSProperty, italic = true },
     CmpItemKindMethod      { TSMethod, italic = true },
     CmpItemKindOperator    { TSOperator, italic = true },
