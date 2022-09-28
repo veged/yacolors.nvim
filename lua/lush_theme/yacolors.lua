@@ -238,6 +238,7 @@ local theme = lush(function()
     TSDefine             { Constant } , -- Preprocessor #define state LineNr, bold = truements.
     TSError              { Error } , -- Syntax/parser errors. This might highlight large sections of code while the user is typing still incomplete code, use a sensible highlight.
     TSException          { Exception } , -- Exception related keywords: `try`, `except`, `finally` in Python.
+    TSPunctException     { fg = Red[6], italic = true } , -- Brackets in exception related keywords.
     TSField              { Identifier } , -- Object and struct fields.
     TSProperty           { } , -- Same as `TSField`.
     TSFloat              { Number } , -- Floating-point number literals.
@@ -250,8 +251,9 @@ local theme = lush(function()
     TSPunctRepeat        { fg = Orange[9], italic = true } , -- Brackets in loops: `for`, `while`, etc.
     TSKeywordDeclaration { Keyword, fg = Constant.fg } , -- Keywords used to define a variable/constant: `var`, `let` and `const` in JavaScript
     TSKeywordFunction    { TSKeywordDeclaration } , -- Keywords used to define a function: `function` in Lua, `def` and `lambda` in Python.
-    TSPunctArrowFunction { TSKeywordFunction } , -- `=>` in arrow functions
-    TSPunctFunction      { fg = Green[7], italic = true } , -- Punctuation in function declarations
+    TSPunctArrowFunction { TSKeywordFunction } , -- `=>` in arrow functions.
+    TSPunctGenFunction   { TSKeywordFunction } , -- `*` in generator functions.
+    TSPunctFunction      { fg = Green[7], italic = true } , -- Punctuation in function declarations.
     TSInclude            { TSKeywordDeclaration } , -- File or module inclusion keywords: `#include` in C, `use` or `extern crate` in Rust.
     TSKeywordSwitch      { TSConditional } , -- Keyword `switch`
     TSKeywordReturn      { Keyword, fg = Purple[10] } , -- Keywords like `return` and `yield`.
@@ -274,11 +276,13 @@ local theme = lush(function()
     TSPunctObject        { fg = TSPunctConditional.fg } , -- Brackets and commas in object literals
     TSStorageClass       { Conditional } , -- Keywords that affect how a variable is stored: `static`, `comptime`, `extern`, etc.
     TSString             { String } , -- String literals.
-    TSStringRegex        { String, italic = true } , -- Regular expression literals.
     TSStringEscape       { Character } , -- Escape characters within a string: `\n`, `\t`, etc.
     TSStringSpecial      { TSStringEscape } , -- Strings with special meaning that don't fit into the previous categories.
-    TSStringSubst        { fg = Green[5], bold = true } , -- Template substitution brackets in template string literals
-    TSPunctString        { fg = Green[7] } , -- Quotes in string literals
+    TSStringSubst        { fg = Mint[5], bold = true } , -- Template substitution brackets in template string literals
+    TSPunctString        { fg = Mint[7] } , -- Quotes in string literals
+    TSStringRegex        { Constant } , -- Regular expression literals.
+    TSPunctRegex         { fg = Green[7] } , -- Regular expression brackets.
+    TSStringRegexFlags   { TSStringRegex } , -- Regular expression flags.
     TSSymbol             { Identifier } , -- Identifiers referring to symbols or atoms.
     TSTag                { Identifier, italic = true } , -- Tags like HTML tag names.
     TSTagAttribute       { Identifier } , -- HTML tag attributes.
@@ -300,6 +304,7 @@ local theme = lush(function()
     TSDanger             { DiagnosticError } , -- Text representation of a danger note.
     TSType               { Type } , -- Type (and class) definitions and annotations.
     TSTypeDefinition     { Type } , -- Type (and class) definitions.
+    TSPunctClass         { TSPunctFunction }, -- Brackets in class definitions.
     TSTypeBuiltin        { Type, bold = true } , -- Built-in types: `i32` in Rust.
     TSVariable           { Identifier } , -- Variable names that don't fit into other categories.
     TSVariableBuiltin    { bold = true } , -- Variable names defined by the language: `this` or `self` in Javascript.

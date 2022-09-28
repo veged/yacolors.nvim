@@ -10,14 +10,22 @@ let y = x.a?.b
 with(x) {
   x()
   delete x
+  decodeURI()
 }
 
-function ff() { gg }
+function ff(a, b) {
+  "use strict"
+  arguments
+}
 function* gg() { yield ff }
+async function* ggg() { yield ff }
 
 while(true) {
   const o = { r: /reg/i }
   const oo = { o }
+  Object.values({})
+  Array.isArray([])
+  window
   if(oo) {
     continue
   } else {
@@ -25,7 +33,11 @@ while(true) {
   }
 }
 
-async function aa() { }
+async function aa() {
+  for await (let num of asyncIterable) {
+    console.log(num);
+  }
+}
 await aa()
 
 do {
@@ -49,7 +61,7 @@ if (x in y) {
   return 1
 }
 
-class C {
+class C extends CC {
   constructor() {
     switch(a) {
       case 1:
@@ -84,8 +96,15 @@ class Rectangle {
   }
   // Method
   calcArea() {
+    throw new Error('eee');
     return this.height * this.width;
   }
+
+  // Generator
+  *genMethod() {}
+
+  // Async
+  async genMethod() {}
 }
 
 export default Rectangle
