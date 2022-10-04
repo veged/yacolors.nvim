@@ -101,7 +101,7 @@ local theme = lush(function()
     SignColumn   { CursorLine }, -- Column where |signs| are displayed
     IncSearch    { bg = Yellow[10] }, -- 'incsearch' highlighting; also used for the text replaced with ":s///c"
     Substitute   { bg = Yellow[5] }, -- |:substitute| replacement text highlighting
-    LineNr       { fg = BlueGrey[13] }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
+    LineNr       { fg = BlueGrey[12] }, -- Line number for ":number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
     CursorLineNr { LineNr, bold = true }, -- Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
     MatchParen   { bg = Yellow[2] }, -- Character under the cursor or just before it, if it is a paired bracket, and its match. |pi_paren.txt|
     ModeMsg      { bold = true }, -- 'showmode' message (e.g., "-- INSERT -- ")
@@ -110,7 +110,7 @@ local theme = lush(function()
     MoreMsg      { bg = Mint[2], fg = Mint[17] }, -- |more-prompt|
     NonText      { fg = Blue[6] }, -- '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line). See also |hl-EndOfBuffer|.
     Pmenu        { NormalFloat }, -- Popup menu: Normal item.
-    PmenuSel     { CursorLine, bold = true }, -- Popup menu: Selected item.
+    PmenuSel     { CursorLine, bold = true, underline = true }, -- Popup menu: Selected item.
     PmenuSbar    { Pmenu }, -- Popup menu: Scrollbar.
     PmenuThumb   { Normal  }, -- Popup menu: Thumb of the scrollbar.
     Question     { MoreMsg }, -- |hit-enter| prompt and yes/no questions
@@ -143,7 +143,7 @@ local theme = lush(function()
     --
     -- Uncomment and edit if you want more specific syntax highlighting.
 
-    Comment        { fg = BlueGrey[14] }, -- Any comment
+    Comment        { fg = BlueGrey[12] }, -- Any comment
 
     Constant       { fg = Green[10] }, -- (*) Any constant
     String         { fg = Mint[8] }, --   A string constant: "this is a string"
@@ -159,7 +159,7 @@ local theme = lush(function()
     Conditional    { Statement, fg = Boolean.fg }, --   if, then, else, endif, switch, etc.
     Repeat         { Statement, fg = Number.fg }, --   for, do, while, etc.
     Label          { Conditional }, --   case, default, etc.
-    Operator       { fg = BlueGrey[14] }, --   "sizeof", "+", "*", etc.
+    Operator       { fg = BlueGrey[12] }, --   "sizeof", "+", "*", etc.
     Keyword        { Statement }, --   any other keyword
     Exception      { Statement, fg = Red[10] }, --   try, catch, throw
 
@@ -269,7 +269,7 @@ local theme = lush(function()
     TSParameter          { Identifier } , -- Parameters of a function.
     TSParameterReference { TSParameter, italic = true } , -- References to parameters of a function.
     TSPreProc            { Constant } , -- Preprocessor #if, #else, #endif, etc.
-    TSPunctDelimiter     { fg = BlueGrey[14] } , -- Punctuation delimiters: Periods, commas, semicolons, etc.
+    TSPunctDelimiter     { fg = BlueGrey[12] } , -- Punctuation delimiters: Periods, commas, semicolons, etc.
     TSPunctBracket       { TSPunctDelimiter } , -- Brackets, braces, parentheses, etc.
     TSPunctSpecial       { TSPunctDelimiter } , -- Special punctuation that doesn't fit into the previous categories.
     TSPunctArray         { fg = TSPunctRepeat.fg } , -- Brackets and commas in array literals
@@ -309,7 +309,7 @@ local theme = lush(function()
     TSVariable           { Identifier } , -- Variable names that don't fit into other categories.
     TSVariableBuiltin    { bold = true } , -- Variable names defined by the language: `this` or `self` in Javascript.
 
-    CmpCursorLine          { bg = NormalFloat.fg, fg = NormalFloat.bg } , -- Highlight group for unmatched characters of each completion field.
+    CmpCursorLine          { bg = NormalFloat.fg, fg = NormalFloat.bg, underline = true } , -- Highlight group for unmatched characters of each completion field.
     CmpItemAbbr            {} , -- Highlight group for unmatched characters of each completion field.
     CmpItemAbbrDeprecated  { strikethrough = true } , -- Highlight group for unmatched characters of each deprecated completion field.
     CmpItemAbbrMatch       { bold = true } , -- Highlight group for matched characters of each completion field. Matched characters must form a substring of a field which share a starting position.
