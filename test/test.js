@@ -2,7 +2,7 @@ import a from 'bbb'
 
 const f = (x) => x
 const g = (a, b) => {
-  return `12${a}${b}3` + 123 + a + b
+  return `12${a}${b}3` + 123 + a + b;
 }
 var x = [1.2, null, undefined]
 let y = x.a?.b
@@ -21,7 +21,7 @@ function* gg() { yield ff }
 async function* ggg() { yield ff }
 
 while(true) {
-  const o = { r: /reg/i }
+  const o = { r: /reg/i, n: 1 }
   const oo = { o }
   Object.values({})
   Array.isArray([])
